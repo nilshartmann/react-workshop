@@ -44,10 +44,15 @@
             max-height: 1000px !important;
         }
 
+        .reveal section img {
+            border:0;
+            box-shadow:0 0 0 0
+        }
         /*rgb(196, 215, 240)*/
         html.exkurs body {
             background: rgb(252, 220, 185) url("ai/es6-icon.png") no-repeat right bottom;
         }
+
 
     </style>
 
@@ -285,7 +290,7 @@ ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
             </ul>
     </section>
     <section>
-          <h2>Übung: React Hello-World</h2>
+          <h2>Übung 0: React Hello-World</h2>
           <h3>Mach dich mit den Werkzeugen vertraut und schreib deine erste React-Komponente</h3>
       </section>
       <section>
@@ -605,7 +610,7 @@ class HelloMessage extends React.Component {
         </section>
 
       <section>
-          <h2>Übung: Detail-Ansicht für unsere Gruß-Anwendung</h2>
+          <h2>Übung 1: Detail-Ansicht für unsere Gruß-Anwendung</h2>
           <h3>Erzeuge eine Komponente mit der man einen Namen und eine Grußformel eingeben kann</h3>
       </section>
       <section>
@@ -655,6 +660,7 @@ class HelloMessage extends React.Component {
                     <li>Empfehlung: Funktionen statt Klassen verwenden (wenn möglich)</li>
                 </ul>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
+import React from 'react';
 export default function Greet(props) {
   return (
       <div>
@@ -721,6 +727,12 @@ const body = greetings.map(greeting =>
         </section>
 
         <section>
+            <h3>Komponenten in Hierarchien</h3>
+            <p>Beispiel: Unsere Anwendung</p>
+            <img src="greeting-hierarchy.png" style="border:0;box-shadow:0 0 0 0"/>
+        </section>
+
+        <section>
             <h3>Controller und Child-Views</h3>
             <!--<img src="smart-dumb.jpg">-->
             <!--<img src="smart-dumb.png">-->
@@ -736,11 +748,10 @@ const body = greetings.map(greeting =>
 class GreetingController extends React.Component {
     render() {
         const {greetings} = this.state;
-        return (
-            <div>
+        return &lt;div>
                 &lt;GreetingMaster greetings={greetings}
-                    onAdd={() => this.setState({mode: MODE_DETAIL})}
-            </div>);
+                    onAdd={() => this.setState({mode: MODE_DETAIL})} />
+            &lt;/div>;
     }
     // ...
 }
@@ -778,45 +789,79 @@ class GreetingController extends React.Component {
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
 import PropTypes from 'prop-types';
 
-export default class GreetingDetail extends React.Component { . . . };
+class GreetingDetail extends React.Component { . . . };
 
 GreetingDetail.propTypes = {
     greeting: PropTypes.shape({
-      name: React.PropTypes.string.isRequired,
-      greeting: React.PropTypes.string.isRequired
+      name: PropTypes.string.isRequired,
+      greeting: PropTypes.string.isRequired
     }),
     onAdd: PropTypes.func.isRequired
 };
 </code></pre>
         </section>
+        <section>
+            <h3>PropTypes</h3>
+            <p>Mit statischen Properties (noch kein JS Standard!)</p>
+            <pre><code class="javascript" contenteditable data-trim>
+import PropTypes from 'prop-types';
+
+class GreetingDetail extends React.Component {
+  static propTypes = {
+    greeting: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      greeting: PropTypes.string.isRequired
+    }),
+    onAdd: PropTypes.func.isRequired
+  };
+
+  render() { . . . }
+};
+            </code></pre>
+        </section>
+        <section>
+            <h3>PropTypes</h3>
+            <p>Für Komponeten als Funktionen</p>
+            <pre><code class="javascript" contenteditable data-trim>
+import PropTypes from 'prop-types';
+
+function HelloMessage(text) { . . . }
+HelloMessage.propTypes = {
+  text: PropTypes.string.isRequired
+}
+            </code></pre>
+        </section>
+
 
         <section>
-            <section>
-                <h2>Übung: Eine komplette Anwendung zusammen setzen</h2>
-                <h3>Füge deinen Detail-View und einen Master-View über eine Controller-Komponente zusammen</h3>
-            </section>
-            <section>
-                <h3>Schritte</h3>
+            <h2>Übung 2: Eine komplette Anwendung zusammen setzen</h2>
+            <h3>Füge deinen bestehenden Detail-View (<code>GreetingDetail</code>) und einen Master-View über eine Controller-Komponente zusammen</h3>
+        </section>
+        <section>
+            <h3>Schritte</h3>
+            <ol>
+                <li>kopiere das Material aus <code>code/material/2-hierarchy</code> in deinen src-Ordner
+                <li>erweitere im <code>GreetingController</code> die render-Methode, so dass dein <code>GreetingDetail</code> angezeigt wird, wenn der Benutzer den Add-Button klickt:
                 <ul>
-                    <li>kopiere das Material aus <code>code/material/2-hierarchy</code> in deinen src-Ordner
-                    <li>erweitere im <code>GreetingController</code> die render-Methode, so dass dein Detail-View angezeigt wird, wenn der Benutzer den Add-Button klickt
                     <li>dort gibt es bereits einen Kommentar, der dir die richtige Stelle anzeigt und weitere Details enthält
                     <li>übergib einen Callback der <code>addGreeting</code> nutzt
-                    <li>im deinem <code>GreetingDetail</code> brauchst du einen neuen Knopf, der mit dem neuen Gruß den Callback aufruft
                 </ul>
-            </section>
-            <section>
-                <h3>Architektur Beispiel-Anwendung</h3>
-                <img src="greeting-hierarchy.png" style="border:0;box-shadow:0 0 0 0"/>
-            </section>
-            <section>
-                <h3>GreetingMaster</h3>
-                <img src="greeting-master.png" style="border:0;box-shadow:0 0 0 0"/>
-            </section>
-            <section>
-                <h3>GreetingDetail</h3>
-                <img src="greeting-detail.png" style="border:0;box-shadow:0 0 0 0"/>
-            </section>
+                <li>im deinem <code>GreetingDetail</code> brauchst du einen neuen Knopf, der mit dem neuen Gruß den Callback aufruft
+                <br><span style="font-size:85%">(Falls dein <code>GreetingDetail</code> nicht fertig geworden ist, kannst Du die Datei code/schritte/2-hierarchy/src/GreetingDetail.js verwenden)</span>
+
+            </ol>
+        </section>
+        <section>
+            <h3>Architektur Beispiel-Anwendung</h3>
+            <img src="greeting-hierarchy.png" style="border:0;box-shadow:0 0 0 0"/>
+        </section>
+        <section>
+            <h3>GreetingMaster</h3>
+            <img src="greeting-master.png" style="border:0;box-shadow:0 0 0 0"/>
+        </section>
+        <section>
+            <h3>GreetingDetail</h3>
+            <img src="greeting-detail.png" style="border:0;box-shadow:0 0 0 0"/>
         </section>
 
         <section id="t3">
@@ -828,17 +873,37 @@ GreetingDetail.propTypes = {
         <section>
             <h3>Herausforderungen</h3>
             <ul>
-                <li>Wo speichern wir?
                 <li>Wie machen wir das Laden und Speichern technisch?
-                <li>Wie funktioniert asynchrone Verarbeitung in React?
                 <li>Wo steht der Code zum initialen Laden der Grüße?
+                <li>Wo speichern wir?
+                <li>Wie funktioniert asynchrone Verarbeitung in React?
             </ul>
         </section>
 
             <section>
-                <h3>fetch</h3>
-                <p>Browser-API zum Laden und Speichern von Daten</p>
-<pre><code class="javascript" contenteditable data-trim>
+                <h3>Server-Calls</h3>
+                <ul>
+                    <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
+                    <li>Häufig in React verwendet: <b>fetch</b>  API
+                    <ul>
+                        <li>Browser-API zum Ausführen von HTTP Requests</li>
+                        <li>Kein JS Standard, aber <a href="http://caniuse.com/#search=fetch" target="_blank">hohe Verbreitung</a></li>
+                        <li>Spezifikation: <a href="https://fetch.spec.whatwg.org/" target="_blank">https://fetch.spec.whatwg.org/</a></li>
+                        <li>Polyfill: <a href="https://github.com/github/fetch" target="_blank">https://github.com/github/fetch</a></li>
+                    </ul>
+                </ul>
+            </section>
+        <section>
+            <h3>Beispiel: fetch</h3>
+
+                <pre><code class="javascript" contenteditable data-trim>
+// GET
+fetch('http://localhost:7000/api/greetings')
+  .then(response => response.json())
+  .then(json => /* ... */)
+  .catch(ex => console.error('request failed', ex));
+
+// PUT
 fetch(url, {
     method: 'PUT',
     headers: {
@@ -847,18 +912,16 @@ fetch(url, {
     },
     body: JSON.stringify(payload)
 })
-.then(response => response.json())
-.then(json => /* ... */)
-.catch(ex => console.error('request failed', ex));
+  .then(...)
 </code></pre>
             </section>
 
 
-        <section>
-            <h2>Promises</h2>
+        <section data-state="exkurs">
+            <h2>ES6: Promises</h2>
         </section>
-                <section>
-                        <h3>fetch</h3>
+                <section data-state="exkurs">
+                        <h3>Beispiel: fetch</h3>
 <pre><code class="javascript" contenteditable>const url = `${BACKEND_URL}${path}`;
 
 return fetch(url)
@@ -867,12 +930,12 @@ return fetch(url)
     .catch(ex => console.error('request failed', ex));
 </code></pre>
                 </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>Ein Promise ist ein Versprechen auf einen Wert</h3>
                         <h4 class="fragment">Wird evtl. erst in der Zukunft eingelöst</h4>
                     </section>
 
-                <section>
+                <section data-state="exkurs">
                         <h3>Erzeugen und asynchron reagieren</h3>
    <pre class="fragment"><code class="javascript" contenteditable>const promise = new Promise(resolve =>
     setTimeout(
@@ -884,7 +947,7 @@ return fetch(url)
 // Output after 1 second: Result from promise
 </code></pre>
                     </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>Verkettete Ausführung</h3>
    <pre><code class="javascript" contenteditable>const promise = new Promise(resolve =>
     setTimeout(
@@ -898,13 +961,13 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
 // Output after 1 second: Result from promise plus stuff
 </code></pre>
                     </section>
-            <section>
+            <section data-state="exkurs">
                 <h3>Fehler führen zum Abbruch der Chain</h3>
                 <h4 class="fragment">Allerdings muss man etwas tun, um das mitzubekommen</h4>
             </section>
 
-                    <section>
-                        <h3>Catch-Klausel</h3>
+                    <section data-state="exkurs">
+                        <h3>Catch-Klausel im Erfolgsfall</h3>
    <pre><code class="javascript" contenteditable>Promise
     // creates and directly resolves promise
     .resolve('Result from promise')
@@ -922,7 +985,7 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
 // Result from promise
 // This will be printed</code></pre>
                     </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>Catch-Klausel im Fehlerfall</h3>
    <pre><code class="javascript" contenteditable>Promise
     // creates and directly resolves promise
@@ -942,25 +1005,77 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
 // Result from promise
 // error:  [Error: Something went wrong]</code></pre>
                     </section>
-                    <section>
-                        <h3>Catch-Klausel bei Ablehnung</h3>
-   <pre><code class="javascript" contenteditable>Promise
-    // creates and directly rejects promise
-    .reject('Promise rejected')
-    .then(x => {
-        // this will NOT be printed
-        console.log(x);
-    })
-    .then(() => {
-        console.log('This will NOT be printed');
-    })
-    // this will be printed
-    .catch(e => console.log('error: ', e))
 
-// Output:
-// error:  Promise rejected</code></pre>
-                </section>
         <section>
+            <h3>fetch im Detail</h3>
+
+            <pre><code class="javascript" contenteditable data-trim>
+// fetch returns a promise
+fetch('http://localhost:7000/api/greetings')
+
+// if resolved, we receive a response object
+// the response object contains among others a
+// json function
+  .then(response => response.json())
+
+// the json() function read the server response body
+// and parses it into a JSON object
+// with the resolved JSON object we set the
+// component state (=&gt; leads to re-rendering)
+  .then(json => this.setState({greetings: json})
+
+// in case something goes wrong (during request or
+// rendering)
+  .catch(ex => console.error('request failed', ex));
+</code></pre>
+        </section>
+        <section>
+            <h3>Initiales Laden von Daten</h3>
+            <ul>
+                <li class="fragment">Komponentenklassen können Lifecycle-Methoden haben: <a href="https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle" target="_blank">
+                        https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle
+                </a></li>
+                <li class="fragment"><code>componentDidMount</code> wird aufgerufen, wenn Komponente ins DOM gerendert wurde</li>
+                <li class="fragment">Hier werden Daten üblicherweise initial geladen:<pre><code class="javascript" contenteditable data-trim>class GreetingController extends React.Component {
+  constructor(props) {
+    // intial state (empty now)
+    this.state = { greetings: [] };
+  }
+  componentDidMount() {
+    fetch('/api/greetings')
+      .then(response =&gt; response.json())
+      .then(json =&gt; this.setState({greetings: json})
+      .catch(. . .)
+    ;
+  }
+}
+                </code></pre>
+            </ul>
+        </section>
+        <section>
+            <h3>Speichern von Daten</h3>
+                <p>Zum Beispiel als Folge einer Benutzerinteraktion:</p>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>class GreetingController extends React.Component {
+  render() {
+    ...
+      &lt;GreetingDetail onAdd={greeting => this.saveGreeting(greeting)} />
+    ...
+  }
+  saveGreeting(greetingToBeSaved) {
+    fetch('/api/greetings', {
+      method: 'POST',
+      headers: ...,
+      body: JSON.stringify(greetingToBeSaved)
+    })
+      .then(response =&gt; response.json())
+      .then(json =&gt; ...)
+      .catch(. . .);
+  }
+}
+                </code></pre>
+        </section>
+
+            <section>
             <section>
                 <h2>Übung: Laden und Speichern der Daten von/auf einem Server</h2>
                 <p>Entwickle auf Basis von fetch eine Version, die die Daten auf dem Server laden und dort wieder speichern kann</p>
@@ -972,9 +1087,190 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
             </section>
 
         </section>
-
         <section id="t4">
             <h1>Teil IV</h1>
+            <h2>Testen</h2>
+        </section>
+
+        <section>
+            <h2>Was testen wir überhaupt?</h2>
+            <ul>
+                <li class="fragment"><b>UI-unabhängige Logik</b> (React-unabhängig)</li>
+                <li class="fragment"><b>Rendern</b> (wird meine Greeting-Liste für ein Satz von Greetings korrekt dargestellt)</li>
+                <li class="fragment"><b>Interaktionen</b> (Funktionieren meine Event-Listener korrekt)</li>
+                <li class="fragment"><b>Verhalten im Browser</b> (z.B. korrekte Darstellung, Browser-spezifisches JavaScript, Arbeiten mit history, Titelzeile, Scrollbars etc)</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>React Test Utils</h2>
+            <ul>
+                <li>Doku: <a href="https://facebook.github.io/react/docs/test-utils.html">https://facebook.github.io/react/docs/test-utils.html</a></li>
+                <li>Eigenes npm Modul (<code>react-addons-test-utils</code>)</li>
+                <li>Verwendung mit jeder beliebigen Assertion-Bibliothek und Test-Runner</li>
+                <li>Hilfsfunktionen zum Suchen von Elementen und Komponenten im DOM</li>
+                <li>Shallow Renderer</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Variante 1: Shallow Rendering</h2>
+            <ul>
+                <li>Rendert <b>virtuellen DOM</b> (kein nativer DOM benötigt)</li>
+                <li>Ein Knoten im virtuellen DOM besteht u.a. aus:
+                    <ul><li><code>type</code> (z.B. <code>div</code>)</li><li>props</code></li></ul>
+                </li>
+                <li>Über den virtuellen DOM kann man Properties abfragen und Callbacks aufrufen
+                <li>Rendert nur <b>eine</b> Hierarchieebene (shallow)
+            </ul>
+        </section>
+        <section>
+            <h2>ReactElement</h2>
+
+            <div class="fragment">
+                <p>Komponente</p>
+                <img src="react-element.png" style="border:0;box-shadow:0 0 0 0"/>
+            </div>
+            <div class="fragment">
+                <p style="margin-top:0px">natives HTML Element</p>
+                <img src="react-element-2.png" style="border:0;box-shadow:0 0 0 0"/>
+            </div>
+        </section>
+
+        <section>
+            <h2>ReactElement</h2>
+            <p>Children</p>
+            <img class="fragment" src="react-element-3.png" style="border:0;box-shadow:0 0 0 0"/>
+        </section>
+
+        <section>
+            <h2>Beispiel: Shallow Rendering</h2>
+            <pre><code class="javascript" contenteditable data-trim>
+import ReactTestUtils from 'react-addons-test-utils';
+
+const renderer = ReactTestUtils.createRenderer();
+
+renderer.render(
+    &lt;GreetingMaster greetings={sampleGreetings} /&gt;
+);
+
+const tree = renderer.getRenderOutput();
+// tree enthält virtuellen DOM
+        </pre>
+            </code>
+        </section>
+        <section>
+            <h2>Shallow Rendering: Assertions</h2>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+. . .
+const tree = renderer.getRenderOutput();
+</code></pre>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+expect(tree.type).toBe('div');
+expect(tree.props.children.length).toEqual(2); // table ~ button
+
+const table = tree.props.children[0];
+expect(table.type).toBe('table');
+
+const tbody = table.props.children[1];
+expect(tbody.type).toBe('tbody');
+</code></pre>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+const rows = tbody.props.children;
+expect(rows).toEqual([
+    &lt;tr key='1'&gt;&lt;td&gt;Olli&lt;/td&gt;&lt;td&gt;Huhu&lt;/td&gt;&lt;/tr&gt;,
+    &lt;tr key='2'&gt;&lt;td&gt;Oma&lt;/td&gt;&lt;td&gt;Hallo&lt;/td&gt;&lt;/tr&gt;
+]);
+</code></pre>
+        </section>
+
+        <section>
+            <h2>Shallow Rendering: Callbacks aufrufen</h2>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+// Ausgangssituation
+const nameInput = tree.props.children;
+expect(nameInput.props.value).toEqual('Lemmy');
+</code></pre>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+const changeEvent = { target: { value: 'Klaus-Dieter' } };
+nameInput.props.onChange(changeEvent);
+</code></pre>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+const updatedTree = renderer.getRenderOutput();
+
+const updatedNameInput = updatedTree.props.children;
+expect(updatedNameInput.props.value).toEqual('Klaus-Dieter');
+        </code></pre>
+        </section>
+
+
+        <section>
+            <h2>Variante 2: Rendering ins DOM</h2>
+            <ul>
+                <li>benötigt natives DOM</li>
+                <li>DOM kann aus JSDOM kommen oder aus echtem Browser
+                <li>Rendert einen kompletten Baum
+                <li>Einfacher für Interaktionen, da nur Clicks ausgelöst werden müssen
+            </ul>
+        </section>
+
+        <section>
+            <h2>Beispiel: Rendering ins DOM</h2>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+const component = ReactTestUtils.renderIntoDocument(
+    &lt;GreetingDetail greeting={greeting} />
+);
+        </pre>
+            </code>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+const [nameInput, greetingInput] =
+  ReactTestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
+const [clearButton, saveButton] =
+  ReactTestUtils.scryRenderedDOMComponentsWithTag(component, 'button');
+        </pre>
+            </code>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+ReactTestUtils.Simulate.click(clearButton);
+expect(nameInput.value).toEqual('');
+expect(clearButton.value).toEqual('');
+        </pre>
+            </code>
+        </section>
+
+        <section>
+            <h2>Testen</h2>
+            <ul>
+                <li>React-Anwendungen sind sehr gut testbar, auch ohne Browser
+                <li>Ausblick/Alternativen:
+                    <a href="https://github.com/airbnb/enzyme" target="_blank">
+                        airbnb enzyme</a>,
+                    <a href="https://github.com/bruderstein/unexpected-react" target="_blank">unexpected react</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <section>
+                <h2>Übung 3: Eine React-Komponente testen</h2>
+                <h3>Stelle sicher, dass in der Komponente GreetingDetail das Klicken des Save-Buttons funktioniert:</h3>
+                <ol>
+                    <li>Der übergebene Event-Handler sollte aufgerufen werden</li>
+                    <li>Dem Event-Handler muss mit einem Objekt aufgerufen werden, das dem eingegebenen Greeting entspricht</li>
+                </ol>
+            </section>
+            <section>
+                <h3>Schritte</h3>
+                <ul>
+                    <li>kopiere das Material aus <code>code/material/3-test</code> in deinen <code>src</code>-Ordner</li>
+                    <li>Verwende die React Test Utils um die <code>GreetingDetail</code>-Komponente zu rendern
+                    <li>Suche im gerenderten DOM den <code>Save</code> Button
+                    <li>"Klicke" den Save Button</li>
+                    <li>Stelle sicher, dass die übergebene <code>onAdd</code>-Callback Funktion aufgerufen wurde</li>
+                    <li>Test kann mit <code>npm run test:watch</code> ausgeführt werden (reagiert auf Code-Änderungen)</ul>
+            </section>
+
+        </section>
+        <section id="t5">
+            <h1>Teil V</h1>
             <h2>Integration mit 3rd-Party Bibliotheken</h2>
             <a href="code/schritte/5-third-party/public/index.html" target="_blank">Ziel-Anwendung</a>
         </section>
@@ -1014,13 +1310,6 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
                 <li>Wie können wir aus NVD3 heraus auch wieder andere React-Komponenten beeinflussen?
                 <li>Wie räumen wir wieder auf?
             </ol>
-        </section>
-
-        <section>
-            <h3>Übersicht über den Komponenten-Lifecycle</h3>
-            <a href="https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle" target="_blank">
-                https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle
-            </a>
         </section>
 
         <section>
@@ -1093,6 +1382,168 @@ class Chart extends React.Component {
                 <p>Zusatzaufgabe: Ein zweites Mal klicken auf das Segment soll den Filter wieder löschen</p>
             </section>
         </section>
+
+        <section id="t6">
+            <h1>Teil VI (Zusatz)</h1>
+            <h2>Client-seitiges Routing</h2>
+            <a href="code/schritte/router-v4/public/index.html" target="_blank">Ziel-Anwendung</a>
+        </section>
+
+        <section>
+            <h2>React Router</h2>
+            <ul>
+                <li>Kein Bestandteil von React</li>
+                <li>Sehr häufig verwendet</li>
+                <li>Doku v4: <a href="https://reacttraining.com/react-router/" target="_blank">
+                    https://reacttraining.com/react-router/</a></li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Themen</h3>
+            <ul>
+                <li><code>Route</code> und <code>IndexRoute</code>
+                <li>history
+                <li>Nested routes und das <code>children</code>-Property
+                <li>Links
+                <li><code>location</code> und <code>param</code> Property und <code>componentWillReceiveProps</code>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Router, Route, IndexRoute, Redirect</h3>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+import { Router, Route, Redirect, IndexRoute, hashHistory }
+    from 'react-router';
+
+const routes = &lt;Router history={hashHistory}>
+  &lt;Redirect from="/vote" to="/votes"/>
+  &lt;Route path="/" component={Layout}>
+    &lt;IndexRoute component={VotePage}/>
+    &lt;Route path="votes/:id" component={SingleVotePage}/>
+    &lt;Route path="login(/:redirect)" component={LoginPage}/>
+    &lt;Route path="compose" component={VoteComposerPage} onEnter={requireAuth}/>
+    &lt;Route path="*" component={NoMatchPage}/>
+  &lt;/Route>
+&lt;/Router>;
+</code></pre>
+        </section>
+
+        <section>
+            <h3>Router</h3>
+            <ul class="fragment">
+                <li>Echte React-Komponente</li>
+                <li>Top-Level-Komponente, entscheidet anhand der <b>history</b>, was dargestellt wird</li>
+                <li>hat Routen als Kinder</li>
+            </ul>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+const routes = &lt;Router history={hashHistory}>
+...
+&lt;/Router>;
+</code></pre>
+        </section>
+
+        <section>
+            <h3>History</h3>
+            <ul class="fragment">
+                <li>kommt aus dem <a target="_blank" href="https://github.com/mjackson/history">history</a>-Projekt</li>
+                <li>Abstraktion der History des Browsers</li>
+                <li>kann zur Navigation genutzt werden</li>
+                <li>liefert aktuelle URL mundgerecht an den Router</li>
+                <li><code>hashHistory</code> codiert Pfad in angehängten Hash (#/vote)
+                <li><code>browserHistory</code> codiert Pfad direkt in URL (/vote)
+            </ul>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+// Push a new entry onto the history stack.
+history.push('/home')
+
+// Replace the current entry on the history stack.
+history.replace('/profile')
+</code></pre>
+        </section>
+
+        <section>
+            <h3>Route</h3>
+            <ul class="fragment">
+                <li>Konfigurations-Komponente</li>
+                <li>welche Komponente soll bei welcher URL darstellt werden</li>
+                <li>können verschachtelt werden (nested)</li>
+                <li>Matching der URL mit Konfiguration ergibt einen Pfad</li>
+                <li>Alle Komponenten des Pfads werden dargestellt</li>
+            </ul>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+// plain match (containing nested routes)
+&lt;Route path="/" component={Layout}>
+    // id is passed as parameter to component
+    &lt;Route path="votes/:id" component={SingleVotePage}/> /
+    // redirect is optional
+    &lt;Route path="login(/:redirect)" component={LoginPage}/>
+    // onEnter and onExit possible as hooks
+    &lt;Route path="compose" component={VoteComposerPage}
+        onEnter={requireAuth}/>
+    // wildcard
+    &lt;Route path="*" component={NoMatchPage}/>
+&lt;/Route>
+</code></pre>
+        </section>
+
+        <section>
+            <h3>IndexRoute und Redirect</h3>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+  // /vote redirects to /votes
+&lt;Redirect from="/vote" to="/votes"/>
+&lt;Route path="/" component={Layout}>
+  // will be rendered additionally when path is just /
+  &lt;IndexRoute component={VotePage}/>
+  // ...
+&lt;/Route>
+</code></pre>
+        </section>
+
+        <section>
+            <h3>Nested Routes und children</h3>
+            <ul class="fragment">
+                <li>Router rendert den gematchten Komponenten-Pfad als seine Unterkomponenten
+                <li>Unterkomponenten werden als <code>children</code> in den <code>props</code> übergeben
+                <li><code>children</code> kann grundsätzlich eine oder mehrere Komponenten sein
+                <li>beim Router ist es immer nur eine Komponente
+            </ul>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+export default function Layout(props) {
+    return &lt;div>
+        &lt;h1>Greetings&lt;/h1>
+        {props.children}
+    &lt;/div>;
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h3>Link</h3>
+            <ul class="fragment">
+                <li>Echte React-Komponente</li>
+                <li>Ein Link auf eine Route</li>
+                <li>wird als <code>a</code>-Element gerendert</li>
+                <li>hat zudem einen Click-Handler, der den Default verhindert und das history-Objekt updated</li>
+                <li>weiß, ob die Route auf die sie verweist, aktiv ist</li>
+            </ul>
+            <pre class="fragment"><code class="xml" contenteditable data-trim>
+&lt;Link to={`/votes/${vote.id}`} activeClassName='active'>
+  &lt;h1 className="Title">{vote.title}&lt;/h1>
+&lt;/Link>
+</code></pre>
+        </section>
+
+        <section>
+            <h3>Datenübergabe an Routen</h3>
+            <p>Der Router übergibt den zu rendernden Routen Daten als Properties</p>
+            <ul class="fragment">
+                <li>Property <code>location</code>: enthält <code>pathname</code> und <code>query</code></li>
+                <li>Property <code>params</code>: die dynamischen Segmente der Route (z.B. <code>id</code>)</li>
+                <li>Lifecycle-Methode <code>componentWillReceiveProps</code>: wird mit neuen Properties aufgerufen, wenn sich die Route geändert hat
+            </ul>
+        </section>
+
     </div>
 
 </div>
