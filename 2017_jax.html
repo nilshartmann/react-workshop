@@ -13,9 +13,6 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
 
     <link rel="stylesheet" href="reveal.js/css/reveal.css">
-    <!--<link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">-->
-    <!--<link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">-->
-    <!--<link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme">-->
     <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
 
 
@@ -47,6 +44,11 @@
             max-height: 1000px !important;
         }
 
+        /*rgb(196, 215, 240)*/
+        html.exkurs body {
+            background: rgb(252, 220, 185) url("ai/es6-icon.png") no-repeat right bottom;
+        }
+
     </style>
 
     <!-- Printing and PDF exports -->
@@ -71,9 +73,10 @@
         <section>
             <h3>React Workshop - Vorbereitung</h3>
             <p>Falls noch nicht gemacht:</p>
-            <ol>
+            <ol style="font-size: 85%">
                 <li><code>git clone https://github.com/nilshartmann/react-workshop.git</code></li>
-                <li>Im geklonten Verzeichnis: <code>npm install</code></li>
+                <li>Im geklonten Verzeichnis: <code>npm install</code>
+                    <br><span  style="font-size: 85%">(Dafür evtl. einen Proxy konfigurieren <a target="_blank" href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/">http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/</a>)</span>
                 <li><code>npm start</code></li>
                 <li>In neuem Terminal: in <code>code/workspace</code> wechseln</li>
                 <li>Ausführen: <code>npm start</code></li>
@@ -93,7 +96,7 @@
                 <a href="http://zeigermann.eu">Oliver Zeigermann</a> / <a href="http://twitter.com/djcordhose">@DJCordhose</a>
 
             </p>
-            <p><a href="http://bit.ly/react-ix">http://bit.ly/react-ix</a></p>
+            <p><a href="http://bit.ly/jax2017-react-workshop">http://bit.ly/jax2017-react-workshop</a></p>
 
         </section>
 
@@ -152,10 +155,18 @@
 
         <section>
             <h3>Hello World React</h3>
-                <a target="_blank" href="code/hello_world/public/index.html">Demo</a>
+                <a target="_blank" href="code/schritte/0-hello_world/public/index.html">Demo</a>
         </section>
 
-        <section>
+        <section data-state="exkurs">
+            <h2>ES6-Referenz</h2>
+            <p>ES6 Features werden vorgestellt, wo wir sie brauchen</p>
+            <p><a href="http://exploringjs.com/es6/" target="_blank">
+                http://exploringjs.com/es6/</a>
+        </section>
+
+
+        <section data-state="exkurs">
             <h3>ES6: Klassen</h3>
             <pre class="fragment"><code class="javascript" contenteditable>class Person {
     constructor(name) {
@@ -180,7 +191,7 @@ console.log(programmer instanceof Programmer); // true
 console.log(programmer instanceof Person); // true</code></pre>
         </section>
 
-        <section>
+        <section data-state="exkurs">
             <h3>ES6: Arrow Functions</h3>
             <pre><code class="javascript" contenteditable>const displayInPage = (text) => {
    return document.body.innerHTML +=
@@ -240,7 +251,7 @@ import HelloMessage from './HelloMessage';
 const mountNode = document.getElementById('mount');
 ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
 </code></pre>
-                    <a target="_blank" href="code/hello_world/public/index.html">Run</a>
+                    <a target="_blank" href="code/schritte/hello_world/public/index.html">Run</a>
                 </section>
 
 
@@ -259,39 +270,48 @@ ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
         <h2>Webpack und Babel</h2>
         <img src="webpack-und-babel.png" style="border:0;box-shadow:0 0 0 0"/>
     </section>
-
+    <section>
+        <h2>Webpack Development Server</h2>
+            <ul>
+                <li>Zum Ausführen der Anwendung wird ein Webserver benötigt</li>
+                <li class="fragment">Für die Entwicklung <b>Webpack Dev Server</b>:
+                <ul>
+                    <li>...führt Webpack auf Basis der Projekt Webpack Konfiguration aus</li>
+                    <li>...erzeugt Ausgabe in Memory (Performance)</li>
+                    <li>...Hot Reloading: Automatische Aktualisierung nach Code Änderung</li>
+                    <li>...React Hot Loader: Zustand bleibt nach Aktualisierung erhalten (Beta)</li>
+                </ul>
+                <li class="fragment"><code>npm start</code> in unserem Beispiel-Projekt</li>
+            </ul>
     </section>
     <section>
-      <section>
           <h2>Übung: React Hello-World</h2>
           <h3>Mach dich mit den Werkzeugen vertraut und schreib deine erste React-Komponente</h3>
       </section>
       <section>
-          <h3>Schritt #1: Tool-Chain starten</h3>
-          <p>Nutze das <code>workspace</code>-Verzeichnis in diesem Repository</p>
-          <p>Hier ist eine Tool-Chain mit Webpack und Babel vorbereitet</p>
-          <ul>
-              <li>Evtl. dafür einen Proxy konfigurieren <a target="_blank" href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/">http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/</a></li>
+          <h3>Schritt #1: Tool-Chain starten (falls noch nicht gemacht)</h3>
+          <p>Nutze für die Übungen das <code>workspace</code>-Verzeichnis in diesem Repository. Hier ist eine Tool-Chain mit Webpack und Babel vorbereitet</p>
+          <ol style="font-size: 85%">
               <li><code>npm install</code> (auf oberster Ebene)
+                  <br><span  style="font-size: 85%">(Dafür evtl. einen Proxy konfigurieren <a target="_blank" href="http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/">http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/</a>)</span>
               <li><code>cd code/workspace</code>
               <li><code>npm start</code>
               <li>Öffne <a href="http://localhost:8080" target="_blank">http://localhost:8080</a> im Browser
               <li>Wenn auf der Seite 'Hello, World' steht, ist alles gut
-          </ul>
+          </ol>
       </section>
       <section>
           <h3>Schritt #2: Deine erste React-Komponente</h3>
           <ul>
               <li>Ersetze die "statische" Komponente (HelloMessage) mit der React-Komponente aus dem vorherigen Beispiel aus den Folien
-              <li>Experimentiere mit der Anwendung, mache einige Änderungen, wie z.B.
-                  <ul>
+              <li><em>Zusatzaufgabe: Experimentiere mit der Anwendung, mache einige Änderungen, wie z.B.</em>
+              <ul>
                       <li>Alle Eingaben sollen in Großbuchstaben auftauchen
                       <li>Gib irgendeine Rückmeldung wenn die Eingabe erfolgreich gelöscht wurde
                   </ul>
-          </li>
+            </li>
           </ul>
       </section>
-    </section>
 
         <section id="t1">
             <h1>Teil I</h1>
@@ -300,19 +320,21 @@ ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
         </section>
 
         <section>
+            <h2>Referenz</h2>
+            <p><a href="https://facebook.github.io/react/docs" target="_blank">
+                https://facebook.github.io/react/docs
+            </a>
+            </p>
+        </section>
+
+
+        <section>
             <h3>Themen</h3>
             <ul>
                 <li>Rendering
                 <li>Properties und Zustand
-                <li>Refs
+                <li>Referenzen auf DOM-Elemente (Refs)
             </ul>
-        </section>
-
-        <section>
-            <h2>ES6-Referenz</h2>
-            <p><a href="http://exploringjs.com/es6/" target="_blank">
-                http://exploringjs.com/es6/
-            </a>
         </section>
 
             <section>
@@ -364,7 +386,7 @@ class GreetingDetail extends React.Component {
 }
 </code></pre>
         </section>
-        <section>
+        <section data-state="exkurs">
             <h3>ES6: Erweiterte Objekt-Literale</h3>
    <pre><code class="javascript" contenteditable>const name = 'Oma';
 const person = {
@@ -376,10 +398,10 @@ console.log(person.name); // Oma
         </section>
 
 
-                    <section>
+                    <section data-state="exkurs">
                         <h2>ES6: Module, Importe und Exporte</h2>
                     </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>ES6: Export einer einzigen Klasse</h3>
    <pre><code class="javascript" contenteditable>// Person.js
 class Person {
@@ -387,8 +409,14 @@ class Person {
 }
 export default Person;
    </code></pre>
+   <pre><code class="javascript" contenteditable>// Person.js
+// in einer Zeile zusammengefasst
+export default class Person {
+  // ...
+}
+   </code></pre>
                     </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>ES6: Import</h3>
    <pre><code class="javascript" contenteditable>// Programmer.js
 import Person from './Person';
@@ -398,15 +426,20 @@ export default class Programmer extends Person {
 }
    </code></pre>
                     </section>
-                    <section>
+                    <section data-state="exkurs">
                         <h3>ES6: Benannte Exporte</h3>
    <pre><code class="javascript" contenteditable data-trim>// util.js
 export function displayInPage(text) {
     document.body.innerHTML +=
         `${text}<br>` ;
 }
+
+export showInfo = msg => window.alert(`Wichtige Info: ${msg}`);
+
 // or
-export { displayInPage };
+function displayInPage(text) { . . . }
+const showInfo = ...;
+export { displayInPage, showInfo };
    </code></pre>
    <pre class="fragment"><code class="javascript" contenteditable data-trim>import {displayInPage} from "./util";
 displayInPage('Hello, World');
@@ -445,7 +478,7 @@ displayInPage('Hello, World');
 
                     <!--</section>-->
 
-                    <section>
+                    <section data-state="exkurs">
                         <h3>ES6: Destructuring von Objekten</h3>
    <pre><code class="javascript" contenteditable>const person = {
   name: 'Olli',
@@ -549,11 +582,11 @@ class GreetingDetail extends React.Component {
         </section>
 
         <section>
-            <h3>React: Refs</h3>
+            <h3>React: Referenzen auf nativen DOM</h3>
             <ul class="fragment">
-                <li>Beim rendern kann man an eine Referenz des unterliegenden DOMs kommen
-                <li>die DOM-Referenz kann einer Funktion übergeben werden
-                <li>Diese Referenz kann man z.B. als Member-Variable speichern
+                <li>Elementen kann eine Callback-Funktion <code>refs</code> übergeben werden
+                <li class="fragment">Funktion wird nach dem Rendern mit Referenz auf DOM Element aufgerufen (oder <code>null</code>)
+                <li class="fragment">Diese Referenz kann man z.B. als Member-Variable speichern
             </ul>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
 class HelloMessage extends React.Component {
@@ -571,10 +604,9 @@ class HelloMessage extends React.Component {
 </code></pre>
         </section>
 
-        <section>
       <section>
           <h2>Übung: Detail-Ansicht für unsere Gruß-Anwendung</h2>
-          <h3>Erzeuge eine Komponenten mit der man einen Namen und eine Grußformel eingeben kann</h3>
+          <h3>Erzeuge eine Komponente mit der man einen Namen und eine Grußformel eingeben kann</h3>
       </section>
       <section>
           <h3>Schritte</h3>
@@ -585,7 +617,6 @@ class HelloMessage extends React.Component {
               <li><em>Zusatzaufgabe: Erweitere deine Komponente so, dass man von außen Properties übergeben kann, die den Zustand initialisieren</em>
           </ul>
       </section>
-    </section>
 
 
         <section id="t2">
@@ -602,15 +633,6 @@ class HelloMessage extends React.Component {
             </a>
             </p>
         </section>
-
-        <section>
-            <h2>Referenz</h2>
-            <p><a href="https://facebook.github.io/react/docs" target="_blank">
-                https://facebook.github.io/react/docs
-            </a>
-            </p>
-        </section>
-
 
         <section>
             <h3>Themen</h3>
@@ -633,7 +655,7 @@ class HelloMessage extends React.Component {
                     <li>Empfehlung: Funktionen statt Klassen verwenden (wenn möglich)</li>
                 </ul>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
-function Greet(props) {
+export default function Greet(props) {
   return (
       <div>
           <h1>{props.greeting}</h1>
@@ -650,7 +672,7 @@ function Greet(props) {
                     <h3>Komponenten als Funktion</h3>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
 // Mit Destructuring
-function Greet({greeting, name}) {
+export default function Greet({greeting, name}) {
   return (
       <div>
           <h1>{greeting}</h1>
@@ -666,6 +688,7 @@ const Greet = ({greeting, name}) => <div>
     <h2>{name}</h2>
   </div>
 }
+export default Greet;
 </code></pre>
 
         </section>
@@ -675,7 +698,7 @@ const Greet = ({greeting, name}) => <div>
                 <ul class="fragment">
                     <li>JSX bietet nichts für Listen
                     <li>Ausgabe typischerweise über <code>Array.map</code>
-                    <li>Elemente einer Liste brauchen einen eindeutigen key
+                    <li>Elemente einer Liste brauchen einen eindeutigen Key
                 </ul>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
 const greetings = [{
