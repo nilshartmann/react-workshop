@@ -765,9 +765,10 @@ class GreetingController extends React.Component {
         <pre class="fragment"><code class="javascript" contenteditable data-trim>
 class GreetingController extends React.Component {
 
-    const greeting = { name: 'Klaus', greeting: 'Hello' };
 
     render() {
+        const greeting = { name: 'Klaus', greeting: 'Hello' };
+
         return &lt;GreetingDetail {...greeting} />
 
         // entspricht:
