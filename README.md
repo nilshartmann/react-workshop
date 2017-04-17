@@ -23,6 +23,8 @@ git clone https://github.com/nilshartmann/react-workshop
 npm install
 ```
 
+(Dafür evtl einen Proxy konfigurieren: http://wil.boayue.com/blog/2013/06/14/using-npm-behind-a-proxy/)
+
 4. Im geklonten Verzeichnis den Server für das Backend starten:
 ```
 npm start
