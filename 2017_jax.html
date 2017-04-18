@@ -159,7 +159,7 @@
         </section>
 
         <section>
-            <h3>Hello World React</h3>
+            <h3>Eine erste Komponente: Hello, World!</h3>
                 <a target="_blank" href="code/schritte/0-hello_world/public/index.html">Demo</a>
         </section>
 
@@ -169,11 +169,24 @@
             <p><a href="http://exploringjs.com/es6/" target="_blank">
                 http://exploringjs.com/es6/</a>
         </section>
+        <section data-state="exkurs">
+            <h3>ES6: Template Strings</h3>
+            <p>Template Strings werden in Backticks (``) geschrieben und können Ausdrücke
+                (in <code>${}</code>) enthalten:</p>
+
+            <pre class="fragment"><code class="javascript" contenteditable>const name = "Susi";
+const greeting = `Hello, ${name}`; // Hello, Susi
+
+const four = `Two and two is: ${2+2}` // Two and two is: 4
+
+const time = `The time is: ${new Date()}`); // The time is: ...
+            </code></pre>
+        </section>
 
 
         <section data-state="exkurs">
             <h3>ES6: Klassen</h3>
-            <pre class="fragment"><code class="javascript" contenteditable>class Person {
+            <pre><code class="javascript" contenteditable>class Person {
     constructor(name) {
         this._name = name;
     }
@@ -187,10 +200,10 @@ class Programmer extends Person {
         this.language = language;
     }
     code() {
-        return this.name + " codes in " + this.language;
+        return `${this.name} codes in ${this.language}`;
     }
 }</code></pre>
-            <pre><code class="javascript" contenteditable>const programmer = new Programmer('Erna', 'JavaScript');
+            <pre class="fragment"><code class="javascript" contenteditable>const programmer = new Programmer('Erna', 'JavaScript');
 console.log(programmer.code());
 console.log(programmer instanceof Programmer); // true
 console.log(programmer instanceof Person); // true</code></pre>
@@ -202,7 +215,9 @@ console.log(programmer instanceof Person); // true</code></pre>
    return document.body.innerHTML +=
        `${text}<br>`;
 };</code></pre>
-            <pre class="fragment"><code class="javascript" contenteditable>const displayInPage = text => document.body.innerHTML += `${text}<br>`;
+            <pre class="fragment"><code class="javascript" contenteditable>// Klammern können weggelassen werden, genau ein Parameter
+// ebenso die geschweiften Klassen, wenn nur ein Statement:
+const displayInPage = text => document.body.innerHTML += `${text}<br>`;
 </code></pre>
         </section>
 
@@ -256,7 +271,7 @@ import HelloMessage from './HelloMessage';
 const mountNode = document.getElementById('mount');
 ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
 </code></pre>
-                    <a target="_blank" href="code/schritte/hello_world/public/index.html">Run</a>
+                    <a target="_blank" href="code/schritte/0-hello_world/public/index.html">Run</a>
                 </section>
 
 
