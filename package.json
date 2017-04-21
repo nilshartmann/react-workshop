@@ -26,6 +26,7 @@
     "enzyme": "^2.7.1",
     "jest": "^19.0.2",
     "jest-fetch-mock": "^1.0.8",
+    "jest-html-reporter": "^0.1.0",
     "json-loader": "^0.5.4",
     "nodemon": "^1.11.0",
     "prettier": "^0.20.0",

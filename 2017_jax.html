@@ -900,7 +900,7 @@ HelloMessage.propTypes = {
                 <h3>Server-Calls</h3>
                 <ul>
                     <li>React macht keine Angabe, wie Server-Calls (technisch) gemacht werden</li>
-                    <li>Häufig in React verwendet: <b>fetch</b>  API
+                    <li>Häufig in React verwendet: <b>fetch</b> API
                     <ul>
                         <li>Browser-API zum Ausführen von HTTP Requests</li>
                         <li>Kein JS Standard, aber <a href="http://caniuse.com/#search=fetch" target="_blank">hohe Verbreitung</a></li>
@@ -1026,31 +1026,32 @@ const promise2 = promise.then(value => `${value} plus stuff`);</code></pre>
             <h3>fetch im Detail</h3>
 
             <pre><code class="javascript" contenteditable data-trim>
-// fetch returns a promise
+// 1. fetch returns a promise, that will be resolved
+// with a Response object when response is received
+// from server
 fetch('http://localhost:7000/api/greetings')
 
-// if resolved, we receive a response object
-// the response object contains among others a
-// json function
+// 2. the Response object contains a json() function,
+// that returns the parsed JSON from the Response body
   .then(response => response.json())
 
-// the json() function read the server response body
-// and parses it into a JSON object
-// with the resolved JSON object we set the
+// 3. with the resolved JSON object we set the
 // component state (=&gt; leads to re-rendering)
   .then(json => this.setState({greetings: json})
 
-// in case something goes wrong (during request or
-// rendering)
+// 4. in case something goes wrong (during request,
+// request processing or rendering)
   .catch(ex => console.error('request failed', ex));
+// as an alternative we could set and render an error msg:
+//  .catch(ex => this.setState({error: ex})
 </code></pre>
         </section>
         <section>
             <h3>Initiales Laden von Daten</h3>
             <ul>
-                <li class="fragment">Komponentenklassen können Lifecycle-Methoden haben: <a href="https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle" target="_blank">
+                <li class="fragment">Komponenten können Lifecycle-Methoden haben: <a href="https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle" target="_blank">
                         https://facebook.github.io/react/docs/react-component.html#the-component-lifecycle
-                </a></li>
+                </a> (nur Klassen!)</li>
                 <li class="fragment"><code>componentDidMount</code> wird aufgerufen, wenn Komponente ins DOM gerendert wurde</li>
                 <li class="fragment">Hier werden Daten üblicherweise initial geladen:<pre><code class="javascript" contenteditable data-trim>class GreetingController extends React.Component {
   constructor(props) {
@@ -1094,7 +1095,7 @@ fetch('http://localhost:7000/api/greetings')
             <section>
             <section>
                 <h2>Übung: Laden und Speichern der Daten von/auf einem Server</h2>
-                <p>Entwickle auf Basis von fetch eine Version, die die Daten auf dem Server laden und dort wieder speichern kann</p>
+                <p>Entwickle eine Version vom GreetingController, die die Daten auf dem Server laden und dort wieder speichern kann</p>
                 <p>Der Server ist bereits vorgegeben und kann mit <code>npm start</code> im Root-Verzeichnis gestartet werden. Er ist dann unter Port 7000 erreichbar</p>
                 <p>Weitere Details findest du unter:
                     <a href="code/material/3-remote/AUFGABEN.md" target="_blank">
@@ -1105,17 +1106,145 @@ fetch('http://localhost:7000/api/greetings')
         </section>
         <section id="t4">
             <h1>Teil IV</h1>
-            <h2>Testen</h2>
+            <h2>Testen (Überblick)</h2>
+            <ul style="font-size:85%">
+                <li><a href="code/schritte/4-test/public/index.html" target="_blank">Ziel-Anwendung</a>
+                <li><a href="code/schritte/4-test/test-report.html">Test Report</a>
+                <li><a href="code/schritte/4-test/coverage/lcov-report/index.html">Coverage Report</a>
+            </ul>
+        </section>
+
+        <section data-transition="slide none">
+            <h2>Was testen wir überhaupt?</h2>
+            <ul>
+                <li class="fragment"><b>UI-unabhängige Logik</b> (z.B. Services, Backend-Calls)</li>
+                <li class="fragment"><b>Rendern</b> (wird meine Greeting-Liste für ein Satz von Greetings korrekt dargestellt)</li>
+                <li class="fragment"><b>Interaktionen</b> (funktionieren meine Event-Listener korrekt)</li>
+                <li class="fragment"><b>Verhalten im Browser</b> (z.B. korrekte Darstellung, Browser-spezifisches JavaScript, Arbeiten mit history, Titelzeile, Scrollbars etc)</li>
+            </ul>
+        </section>
+
+        <section data-transition="none">
+            <h2>Was testen wir überhaupt?</h2>
+            <ul>
+                <li style="color: lightgrey"><b>UI-unabhängige Logik</b></li>
+                <li><b>Rendern</b> (wird meine Greeting-Liste für ein Satz von Greetings korrekt dargestellt) <b>React-spezifisch!</b></li>
+                <li><b>Interaktionen</b> (funktionieren meine Event-Listener korrekt) <b>React-spezifisch!</b></li>
+                <li style="color: lightgrey"><b>Verhalten im Browser</b> (z.B. korrekte Darstellung, Browser-spezifisches JavaScript, Arbeiten mit history, Titelzeile, Scrollbars etc)</li>
+            </ul>
         </section>
 
         <section>
-            <h2>Was testen wir überhaupt?</h2>
+            <h2>Anforderungen</h2>
             <ul>
-                <li class="fragment"><b>UI-unabhängige Logik</b> (React-unabhängig)</li>
-                <li class="fragment"><b>Rendern</b> (wird meine Greeting-Liste für ein Satz von Greetings korrekt dargestellt)</li>
-                <li class="fragment"><b>Interaktionen</b> (Funktionieren meine Event-Listener korrekt)</li>
-                <li class="fragment"><b>Verhalten im Browser</b> (z.B. korrekte Darstellung, Browser-spezifisches JavaScript, Arbeiten mit history, Titelzeile, Scrollbars etc)</li>
+                <li class="fragment">Komponenten müssen im Test gerendert werden können</li>
+                <li class="fragment">Gerenderte Komponenten/HTML-Elemente müssen gefunden und validiert werden</li>
+                <li class="fragment">Zustand und Properties der Komponenten müssen veränderbar sein</li>
+                <li class="fragment">Events müssen getriggert oder simuliert werden können</li>
+                <li class="fragment">Interaktion mit DOM muss evtl möglich sein</li>
             </ul>
+        </section>
+
+        <section>
+            <h1>Jest</h1>
+            <p><em>"Painless JavaScript Testing" (<a href="http://facebook.github.io/jest/" target="_blank">http://facebook.github.io/jest/</a>)</em></p>
+            <p class="fragment">Vollständige Test-Lösung, wird von Facebook für Testen von React verwendet:</p>
+            <ul class="fragment">
+                <li class="fragment">Test Runner</li>
+                <li class="fragment">Specs, Assertions, Mocks</li>
+                <li class="fragment">Code Coverage</li>
+                <li class="fragment">Snapshot testing</li>
+            </ul>
+        </section>
+        <section>
+            <h3>Beispiel: Ein einfacher Test</h3>
+            <pre><code class="javascript" contenteditable data-trim>// sum.js
+export const sum = (a,b) => a+b;
+</code></pre>
+<pre class="fragment"><code class="javascript" contenteditable data-trim>// sum.test.js
+import {sum} from '../sum.js';
+
+test('sum of 2 and 2 is 4', () => {
+    expect(sum(2, 2)).toBe(4);
+});
+
+test('sum of 2 and 2 is not 3', () => {
+    expect(sum(2, 2)).not.toBe(3);
+});
+            </code></pre>
+        </section>
+        <section>
+            <h3>React Test Renderer</h3>
+            <p><a href="https://www.npmjs.com/package/react-test-renderer">https://www.npmjs.com/package/react-test-renderer</a></p>
+            <p>Erlaubt es, React Komponenten in JSON Objekte zu rendern:</p>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>import renderer from 'react-test-renderer';
+const tree = renderer.create(
+        &lt;GreetingMaster greetings={someGreetings} />
+);
+console.log(tree.json());
+            </code></pre>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>
+{ type: 'div',
+  props: {},
+  children:  [
+                { type: 'table', props: {}, children: [Object] },
+                { type: 'button', props: [Object], children: [Object] }
+              ]
+}
+            </code></pre>
+
+        </section>
+
+
+            <section>
+            <h2>Testen in JavaScript</h2>
+            <p>Zwei mögliche Stacks</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Aufgabe</th>
+                    <th>Mocha</th>
+                    <th>Jest</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Runner</td>
+                    <td>Mocha</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Reporter</td>
+                    <td>Mocha</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Code coverage</td>
+                    <td>Istanbul</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Specs</td>
+                    <td>Mocha</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Assertions</td>
+                    <td>Chai</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Mock & Spy</td>
+                    <td>Sinon</td>
+                    <td>Jest</td>
+                </tr>
+                <tr>
+                    <td>Rendern &amp; Navigieren im DOM</td>
+                    <td>Enzyme</td>
+                    <td>Enzyme</td>
+                </tr>
+                </tbody>
+            </table>
         </section>
 
         <section>
