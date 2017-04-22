@@ -119,7 +119,7 @@
             <h2>Inhalt</h2>
             <ul>
                 <li><a href="#/t0">Teil 0: React-Einführung und Build-Prozess</a>
-                <li><a href="#/t1">Teil I: React-Komponenten und ES6 Grundlagen</a>
+                <li><a href="#/t1">Teil I: React-Komponenten</a>
                 <li><a href="#/t2">Teil II: Komponentenhierarchien</a>
                 <li><a href="#/t3">Teil III: Remote-Calls gegen Server</a>
                 <li><a href="#/t4">Teil IV: Testen von React Anwendungen (Überblick)</a>
@@ -149,7 +149,7 @@
                 <li class="fragment">Minimales API
                 <li class="fragment">Ein-Weg-Data-Binding: Zustandsänderungen stellen Komponente <b>komplett</b> neu dar
                 <li class="fragment">Kann im Browser und auf dem Server rendern
-                <li class="fragment">wird für komplette Anwendung typischerweise mit React Router und einem Flux-Framework gekoppelt
+                <li class="fragment">wird für komplette Anwendung typischerweise mit weiteren Libs verwendet (Redux, Flux, Router, ...)
                 <li class="fragment">viel Inspiration aus der funktionalen Ecke (Immutable, pure functions, stateless)
             </ul>
         </section>
@@ -346,7 +346,7 @@ ReactDOM.render(&lt;HelloMessage greeting="Hello"/>, mountNode);
 
         <section id="t1">
             <h1>Teil I</h1>
-            <h2>React-Komponenten und ES6 Grundlagen</h2>
+            <h2>React-Komponenten</h2>
             <a href="code/schritte/1-detail/public/index.html" target="_blank">Ziel-Anwendung</a>
         </section>
 
@@ -788,7 +788,7 @@ const body = greetings.map(greeting =>
         <section>
             <h3>Komponenten in Hierarchien</h3>
             <p>Beispiel: Unsere Anwendung</p>
-            <img src="greeting-hierarchy.png" style="border:0;box-shadow:0 0 0 0"/>
+            <img src="ai/greeting-hierarchy-without-callbacks.png"/>
         </section>
 
         <section>
@@ -881,7 +881,7 @@ class GreetingDetail extends React.Component {
         </section>
         <section>
             <h3>PropTypes</h3>
-            <p>Für Komponeten als Funktionen</p>
+            <p>Für Komponenten als Funktionen</p>
             <pre><code class="javascript" contenteditable data-trim>
 import PropTypes from 'prop-types';
 
