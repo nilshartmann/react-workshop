@@ -1176,244 +1176,108 @@ test('sum of 2 and 2 is not 3', () => {
         <section>
             <h3>React Test Renderer</h3>
             <p><a href="https://www.npmjs.com/package/react-test-renderer">https://www.npmjs.com/package/react-test-renderer</a></p>
-            <p>Erlaubt es, React Komponenten in JSON Objekte zu rendern:</p>
+            <p>Rendert React Komponenten in JSON Objekte (ohne DOM):</p>
             <pre class="fragment"><code class="javascript" contenteditable data-trim>import renderer from 'react-test-renderer';
-const tree = renderer.create(
+const component = renderer.create(
         &lt;GreetingMaster greetings={someGreetings} />
 );
-console.log(tree.json());
+
+console.log(component.toJSON());
             </code></pre>
             <pre class="fragment"><code class="javascript" contenteditable data-trim>
 { type: 'div',
   props: {},
   children:  [
-                { type: 'table', props: {}, children: [Object] },
-                { type: 'button', props: [Object], children: [Object] }
-              ]
+    { type: 'table', props: {}, children: [Object] },
+    { type: 'button', props: [Object], children: [Object] }
+  ]
 }
             </code></pre>
 
         </section>
-
-
-            <section>
-            <h2>Testen in JavaScript</h2>
-            <p>Zwei mögliche Stacks</p>
-            <table>
-                <thead>
-                <tr>
-                    <th>Aufgabe</th>
-                    <th>Mocha</th>
-                    <th>Jest</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Runner</td>
-                    <td>Mocha</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Reporter</td>
-                    <td>Mocha</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Code coverage</td>
-                    <td>Istanbul</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Specs</td>
-                    <td>Mocha</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Assertions</td>
-                    <td>Chai</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Mock & Spy</td>
-                    <td>Sinon</td>
-                    <td>Jest</td>
-                </tr>
-                <tr>
-                    <td>Rendern &amp; Navigieren im DOM</td>
-                    <td>Enzyme</td>
-                    <td>Enzyme</td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-
         <section>
-            <h2>React Test Utils</h2>
+            <h3>"Snapshot Testing" mit Jest</h3>
+            <p><code>expect(obj).toMatchSnapshot()</code> vergleicht ein JSON-Objekt mit einer gespeicherten Datei:</p>
             <ul>
-                <li>Doku: <a href="https://facebook.github.io/react/docs/test-utils.html">https://facebook.github.io/react/docs/test-utils.html</a></li>
-                <li>Eigenes npm Modul (<code>react-addons-test-utils</code>)</li>
-                <li>Verwendung mit jeder beliebigen Assertion-Bibliothek und Test-Runner</li>
-                <li>Hilfsfunktionen zum Suchen von Elementen und Komponenten im DOM</li>
-                <li>Shallow Renderer</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Variante 1: Shallow Rendering</h2>
-            <ul>
-                <li>Rendert <b>virtuellen DOM</b> (kein nativer DOM benötigt)</li>
-                <li>Ein Knoten im virtuellen DOM besteht u.a. aus:
-                    <ul><li><code>type</code> (z.B. <code>div</code>)</li><li>props</code></li></ul>
+                <li class="fragment">Bei <b>erster</b> Ausführung: legt Snapshot-File an
+                    (<a href="jest-snapshot-file.png" target="_blank">Beispiel</a>)
+                    <ul>
+                        <li class="fragment">Snapshotdateien werden in Git versioniert</li>
+                    </ul>
                 </li>
-                <li>Über den virtuellen DOM kann man Properties abfragen und Callbacks aufrufen
-                <li>Rendert nur <b>eine</b> Hierarchieebene (shallow)
+                <li class="fragment">Bei <b>folgenden</b> Ausführungen: erzeugt neuen Snapshot und vergleicht mit
+                    gespeichtertem Snapshot
+                </li>
+                <li class="fragment">Wenn Snapshots unterschiedlich
+                    <ul>
+                        <li>Fehler samt Diff (<a href="jest-snapshot-diff.png" target="_blank">Beispiel</a>)</li>
+                        <li>Im Watch Mode kann Snapshot aktualisiert werden
+                            <img src="jest-snapshot-update.png"></li>
+                    </ul>
+                </li>
+
             </ul>
         </section>
-        <section>
-            <h2>ReactElement</h2>
 
-            <div class="fragment">
-                <p>Komponente</p>
-                <img src="react-element.png" style="border:0;box-shadow:0 0 0 0"/>
-            </div>
-            <div class="fragment">
-                <p style="margin-top:0px">natives HTML Element</p>
-                <img src="react-element-2.png" style="border:0;box-shadow:0 0 0 0"/>
-            </div>
+        <section>
+            <h3>Snapshot Testing mit Jest und React</h3>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>import renderer from 'react-test-renderer';
+
+test('it should render correctly', () => {
+
+  const someGreetings = [ . . . ];
+
+  const component = renderer.create(
+    &lt;GreetingMaster greetings={someGreetings} />
+  );
+
+  expect(component.toJSON()).toMatchSnapshot();
+});
+            </code></pre>
+            <p class="fragment"><em>Snapshot sagt nicht, ob UI richtig oder falsch gerendert wird, sondern nur, ob sie verändert wurde!</em></p>
         </section>
 
         <section>
-            <h2>ReactElement</h2>
-            <p>Children</p>
-            <img class="fragment" src="react-element-3.png" style="border:0;box-shadow:0 0 0 0"/>
-        </section>
-
-        <section>
-            <h2>Beispiel: Shallow Rendering</h2>
-            <pre><code class="javascript" contenteditable data-trim>
-import ReactTestUtils from 'react-addons-test-utils';
-
-const renderer = ReactTestUtils.createRenderer();
-
-renderer.render(
-    &lt;GreetingMaster greetings={sampleGreetings} /&gt;
-);
-
-const tree = renderer.getRenderOutput();
-// tree enthält virtuellen DOM
-        </pre>
-            </code>
-        </section>
-        <section>
-            <h2>Shallow Rendering: Assertions</h2>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-. . .
-const tree = renderer.getRenderOutput();
-</code></pre>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-expect(tree.type).toBe('div');
-expect(tree.props.children.length).toEqual(2); // table ~ button
-
-const table = tree.props.children[0];
-expect(table.type).toBe('table');
-
-const tbody = table.props.children[1];
-expect(tbody.type).toBe('tbody');
-</code></pre>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const rows = tbody.props.children;
-expect(rows).toEqual([
-    &lt;tr key='1'&gt;&lt;td&gt;Olli&lt;/td&gt;&lt;td&gt;Huhu&lt;/td&gt;&lt;/tr&gt;,
-    &lt;tr key='2'&gt;&lt;td&gt;Oma&lt;/td&gt;&lt;td&gt;Hallo&lt;/td&gt;&lt;/tr&gt;
-]);
-</code></pre>
-        </section>
-
-        <section>
-            <h2>Shallow Rendering: Callbacks aufrufen</h2>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-// Ausgangssituation
-const nameInput = tree.props.children;
-expect(nameInput.props.value).toEqual('Lemmy');
-</code></pre>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const changeEvent = { target: { value: 'Klaus-Dieter' } };
-nameInput.props.onChange(changeEvent);
-</code></pre>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const updatedTree = renderer.getRenderOutput();
-
-const updatedNameInput = updatedTree.props.children;
-expect(updatedNameInput.props.value).toEqual('Klaus-Dieter');
-        </code></pre>
-        </section>
-
-
-        <section>
-            <h2>Variante 2: Rendering ins DOM</h2>
+            <h3>Enzyme</h3>
+            <p><em>JavaScript Testing utilities for React (<a href="http://airbnb.io/enzyme/" target="_blank">http://airbnb.io/enzyme/</a>)</em></p>
+            <p>Bibliothek mit Funktionen zum Testen von React Komponenten</p>
             <ul>
-                <li>benötigt natives DOM</li>
-                <li>DOM kann aus JSDOM kommen oder aus echtem Browser
-                <li>Rendert einen kompletten Baum
-                <li>Einfacher für Interaktionen, da nur Clicks ausgelöst werden müssen
+                <li class="fragment">Rendern von Komponenten:
+                    <ul>
+                        <li><b>shallow</b> zum "flachen" Rendern einer Komponente</li>
+                        <li><b>mount</b> zum Rendern einer Komponete in einen (headless) DOM, z.B. jsdom</li>
+                    </ul>
+                </li>
+                <li class="fragment">Navigieren durch den DOM und Suchen von Elementen und Komponenten</li>
+                <li class="fragment">Modifizieren von Komponenten und Auslösen von Events</li>
             </ul>
         </section>
 
         <section>
-            <h2>Beispiel: Rendering ins DOM</h2>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const component = ReactTestUtils.renderIntoDocument(
-    &lt;GreetingDetail greeting={greeting} />
-);
-        </pre>
-            </code>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-const [nameInput, greetingInput] =
-  ReactTestUtils.scryRenderedDOMComponentsWithTag(component, 'input');
-const [clearButton, saveButton] =
-  ReactTestUtils.scryRenderedDOMComponentsWithTag(component, 'button');
-        </pre>
-            </code>
-            <pre class="fragment"><code class="javascript" contenteditable data-trim>
-ReactTestUtils.Simulate.click(clearButton);
-expect(nameInput.value).toEqual('');
-expect(clearButton.value).toEqual('');
-        </pre>
-            </code>
+            <h3>Testen einer Komponente mit Jest und Enzyme</h3>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>import {mount} from 'enzyme';
+import GreetingController from '...';
+import GreetingDetail from '...';
+test('it should open detail view on button click', () => {
+    // mount the component into a real dom (implemented by JSDom)
+    const component = mount(&lt;GreetingController  />);
+
+    // on initial render the list with greetings (GreetingMaster)
+    // is visible but no GreetingDetail
+    expect(component.find(GreetingDetail)).toHaveLength(0);
+
+    // find the "add" Button...
+    const addButton = component.find('button');
+
+    // click on the button
+    addButton.simulate('click');
+
+    // now the GreetingDetail should be visible
+    expect(component.find(GreetingDetail)).toHaveLength(1);
+});
+            </code></pre>
         </section>
 
-        <section>
-            <h2>Testen</h2>
-            <ul>
-                <li>React-Anwendungen sind sehr gut testbar, auch ohne Browser
-                <li>Ausblick/Alternativen:
-                    <a href="https://github.com/airbnb/enzyme" target="_blank">
-                        airbnb enzyme</a>,
-                    <a href="https://github.com/bruderstein/unexpected-react" target="_blank">unexpected react</a></li>
-            </ul>
-        </section>
-
-        <section>
-            <section>
-                <h2>Übung 3: Eine React-Komponente testen</h2>
-                <h3>Stelle sicher, dass in der Komponente GreetingDetail das Klicken des Save-Buttons funktioniert:</h3>
-                <ol>
-                    <li>Der übergebene Event-Handler sollte aufgerufen werden</li>
-                    <li>Dem Event-Handler muss mit einem Objekt aufgerufen werden, das dem eingegebenen Greeting entspricht</li>
-                </ol>
-            </section>
-            <section>
-                <h3>Schritte</h3>
-                <ul>
-                    <li>kopiere das Material aus <code>code/material/3-test</code> in deinen <code>src</code>-Ordner</li>
-                    <li>Verwende die React Test Utils um die <code>GreetingDetail</code>-Komponente zu rendern
-                    <li>Suche im gerenderten DOM den <code>Save</code> Button
-                    <li>"Klicke" den Save Button</li>
-                    <li>Stelle sicher, dass die übergebene <code>onAdd</code>-Callback Funktion aufgerufen wurde</li>
-                    <li>Test kann mit <code>npm run test:watch</code> ausgeführt werden (reagiert auf Code-Änderungen)</ul>
-            </section>
-
-        </section>
         <section id="t5">
             <h1>Teil V</h1>
             <h2>Integration mit 3rd-Party Bibliotheken</h2>
@@ -1456,6 +1320,42 @@ expect(clearButton.value).toEqual('');
                 <li>Wie räumen wir wieder auf?
             </ol>
         </section>
+        <section>
+            <h3>Hintergrund: Charts mit NVD3</h3>
+            <p>Basiert auf D3.js</p>
+            <p>Benötigt svg DOM-Element um sich zu rendern</p>
+            <p class="fragment">Stark vereinfachtes Beispiel:</p>
+            <pre class="fragment"><code class="javascript" contenteditable data-trim>import d3 from 'd3';
+import nv from 'nvd3';
+
+// Chart erzeugen
+const chart = nv.models.pieChart();
+// ...Chart Config ausgelassen ...
+
+// mit d3 rendern und mit Daten versorgen
+const element = document.getElementById('chart');
+d3.select(element);
+  .datum(data)
+  .call(chart);
+
+// Callbacks registrieren (z.B. bei Klick auf ein Element)
+chart.pie.dispatch.on("elementClick",
+                       e => console.log(e.data.label));
+            </code></pre>
+
+        </section>
+        <section>
+            <h3>React Chart Komponent #2</h3>
+            <p>React Callback Funktionen</p>
+            <ul>
+                <li>(einmalig) <code>componentDidMount()</code>: Komponente wurde gerendert, Element sind im DOM</li>
+                <li><code>componentWillReceiveProps(nextProps)</code>: An die Komponente wurden neue Properties übergeben. Die neuen Properties
+                    werden als Parameter übergeben</li>
+                <li><code>shouldComponentUpdate()</code>: Entscheidet, ob Komponete erneut gerendert werden soll (default: <code>true</code>)</li>
+                <li>(einmalig) <code>componentWillUnmount()</code>: Wird aufgerufen, bevor Komponente aus dem DOM entfernt wird</li>
+            </ul>
+
+        </section>
 
         <section>
             <h3>React Chart Komponente #1</h3>
@@ -1467,15 +1367,18 @@ class Chart extends React.Component {
         return &lt;svg ref={c => this._chart = c}>&lt;/svg>
     }
 
-    shouldComponentUpdate() {
-        // (2) once rendered react never renders again
-        return false;
-    }
+    componentDidMount() {
+        const {data, onSegmentSelected} = this.props;
 
-    componentWillReceiveProps(nextProps) {
-        const {data} = nextProps;
-        // (3) we still get updates of properties making it reactive
-        updateNvd3Chart(this._chart, data);
+        // (2) once rendered by react we create the nvd3 chart
+        const chart = createNvd3Chart(this._chart, data);
+
+        // (3) we delegate the label of clicked segment
+        //     back to parent component
+        if (onSegmentSelected) {
+            chart.pie.dispatch.on(
+                "elementClick", e => onSegmentSelected(e.data.label));
+        }
     }
 
     // ...
@@ -1483,24 +1386,22 @@ class Chart extends React.Component {
        </code></pre>
         </section>
 
-        <section>
+            <section>
             <h3>React Chart Komponent #2</h3>
             <pre><code data-trim contenteditable class="line-numbers" data-leftpad>
 class Chart extends React.Component {
     // ...
 
-    componentDidMount() {
-        const {data, onSegmentSelected} = this.props;
+    componentWillReceiveProps(nextProps) {
+        const {data} = nextProps;
+        // (4) we get updates of properties making it reactive
+        updateNvd3Chart(this._chart, data);
+    }
 
-        // (4) once rendered by react we create the nvd3 chart
-        const chart = createNvd3Chart(this._chart, data);
-
-        // (5) we delegate the label of clicked segment
-        //     back to parent component
-        if (onSegmentSelected) {
-            chart.pie.dispatch.on("elementClick",
-                                  e => onSegmentSelected(e.data.label));
-        }
+    shouldComponentUpdate() {
+        // (5) once rendered we will never render again
+        // (svg-Element is managed by D3)
+        return false;
     }
 
     // (6) called just before destroying component
@@ -1520,7 +1421,7 @@ class Chart extends React.Component {
             <section>
                 <h3>Schritte</h3>
                 <ul>
-                    <li>kopiere das Material aus <code>code/material/4-3rd-party</code> in deinen src-Ordner
+                    <li>kopiere das Material aus <code>code/material/5-3rd-party</code> in deinen src-Ordner
                     <li>binde die Chart-Komponente in die render-Methode des <code>GreetingController</code> ein
                     <li>alle Stellen die du ändern musst sind dort bereits mit einem Kommentar versehen
                 </ul>
