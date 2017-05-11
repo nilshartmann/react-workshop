@@ -10,10 +10,11 @@ Das `backend`-Modul stellt zwei Funktionen (`loadFromServer`und `saveToServer`) 
 Verarbeitung der Antwort (Parsen JSON, Fehlerbehandlung). Das Ergebnis wird dann
 über eine der beiden Callback-Funktionen zurückgegeben. (siehe API Doku)
 
-**Beispiel**:
+**Beispiel Laden**:
 ```javascript
 import {loadFromServer} from './backend';
 
+...
 loadFromServer(
   // 1. parameter: success callback:
   greetings => console.log('Greetings loaded: ', greetings),
@@ -21,6 +22,32 @@ loadFromServer(
   // 2. parameter: error handler:
   error => console.error('Some error occured: ', error)
 );
+```
+
+**Beispiel Speichern**:
+```javascript
+import {saveToServer} from './backend';
+
+...
+
+// Hilfsfunktion zum Verarbeiten der Antwort (gelesene Id des neuen Greetings)
+// und zum setzen des neuen States
+const _addNewGreeting = serverResponse => {
+    const newGreetingId = serverResponse.id;
+    const newGreeting = {...greetingToBeAdded, id: newGreetingId};
+    const newGreetings = [...this.state.greetings, newGreeting];
+    this.setState({
+        greetings: newGreetings,
+        mode: MODE_MASTER
+    });
+};
+
+// saveToServer aus dem backend-Modul:
+saveToServer(greetingToBeAdded, 
+    _addNewGreeting, 
+    err => console.error('COULD NOT SAVE GREETING: ', err)
+);
+        
 ```
 
 Weitere Informationen kannst Du der API Doku in dem `backend` Modul entnehmen.

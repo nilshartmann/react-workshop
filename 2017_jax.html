@@ -116,6 +116,13 @@
         </section>
 
         <section>
+            <h2>Werbung</h2>
+            <p>Lust bekommen, React zu entwickeln?</p>
+            <p>Wir stellen ein :-)</p>
+            <a href="https://eos-technology.solutions/karriere" target="_blank">EOS Technology Solutions</a>
+        </section>
+
+        <section>
             <h2>Inhalt</h2>
             <ul>
                 <li><a href="#/t0">Teil 0: React-Einführung und Build-Prozess</a>
@@ -839,12 +846,12 @@ class GreetingController extends React.Component {
 
         <section>
             <h3>PropTypes</h3>
-                <ul class="fragment">
-                    <li>Eine Komponente kann deklarieren, welche Properties sie erwartet
-                    <li>Auch der Typ kann angegeben werden
-                    <li>Fehlende / falsche Properties führen zu Laufzeitfehlern
-                    <li>Ab React 15.5 eigenes npm modul: <a href="https://www.npmjs.com/package/prop-types" target="_blank"><code>prop-types</code></a></li>
-                    <li><a href="https://facebook.github.io/react/docs/typechecking-with-proptypes.html" target="_blank">Mögliche Typen</a>
+                <ul>
+                    <li class="fragment">Eine Komponente kann deklarieren, welche Properties sie erwartet
+                    <li class="fragment">Auch der Typ kann angegeben werden (<a href="https://facebook.github.io/react/docs/typechecking-with-proptypes.html" target="_blank">Mögliche Typen</a>)
+                    <li class="fragment">Fehlende / falsche Properties führen zu Laufzeitfehlern
+                    <li class="fragment">Ab React 15.5 eigenes npm modul: <a href="https://www.npmjs.com/package/prop-types" target="_blank"><code>prop-types</code></a></li>
+                    <li class="fragment">Alternative: Typsystem (<a href="https://flow.org" target="_blank">Flow</a> oder <a href="https://typescriptlang.org" target="_blank">TypeScript</a>)
                 </ul>
 <pre class="fragment"><code class="javascript" contenteditable data-trim>
 import PropTypes from 'prop-types';
@@ -862,7 +869,7 @@ GreetingDetail.propTypes = {
         </section>
         <section>
             <h3>PropTypes</h3>
-            <p>Mit statischen Properties (noch kein JS Standard!)</p>
+            <p>Mit statischen Properties (<code>static</code> noch kein JS Standard!)</p>
             <pre><code class="javascript" contenteditable data-trim>
 import PropTypes from 'prop-types';
 
@@ -907,7 +914,7 @@ HelloMessage.propTypes = {
                     <li>übergib einen Callback der <code>addGreeting</code> nutzt
                 </ul>
                 <li>im deinem <code>GreetingDetail</code> brauchst du einen neuen Knopf, der mit dem neuen Gruß den Callback aufruft
-                <br><span style="font-size:85%">(Falls dein <code>GreetingDetail</code> nicht fertig geworden ist, kannst Du die Datei code/schritte/2-hierarchy/src/GreetingDetail.js verwenden)</span>
+                <br><span style="font-size:85%">(Du kannst dein <code>GreetingDetail</code> verwenden, oder die Vorlage code/material/2-hierarchy/src/_GreetingDetail.js verwenden)</span>
 
             </ol>
         </section>
@@ -1003,7 +1010,7 @@ return fetch(url)
         1000)
 );
 </code></pre>
-    <pre><code class="javascript" contenteditable>promise.then(value => console.log(value));
+    <pre class="fragment"><code class="javascript" contenteditable>promise.then(value => console.log(value));
 // Output after 1 second: Result from promise
 </code></pre>
                     </section>
@@ -1137,17 +1144,34 @@ fetch('http://localhost:7000/api/greetings')
         </section>
 
             <section>
-            <section>
                 <h2>Übung: Laden und Speichern der Daten von/auf einem Server</h2>
-                <p>Entwickle eine Version vom GreetingController, die die Daten auf dem Server laden und dort wieder speichern kann</p>
-                <p>Der Server ist bereits vorgegeben und kann mit <code>npm start</code> im Root-Verzeichnis gestartet werden. Er ist dann unter Port 7000 erreichbar</p>
-                <p>Weitere Details findest du unter:
+                <ul>
+                <li>Entwickle eine Version vom GreetingController, die die Daten auf dem Server laden und dort wieder speichern kann</li>
+                <li>Der Server ist bereits vorgegeben und kann mit <code>npm start</code> im Root-Verzeichnis gestartet werden. Er ist dann unter Port 7000 erreichbar</li>
+                </ul>
+            </section>
+        <section>
+            <h2>Vorbereitung für die Übung</h2>
+            <ol>
+                <li>Kopiere <code>code/material/3-remote/backend.js</code> und <code>code/material/3-remote/main.js</code> in deinen Workspace</li>
+                <li>Du kannst außerdem <code>code/material/3-remote/_GreetingController.js</code> als Template verwenden. Die notwendigen
+                Schritte sind dort als Kommentar markiert.</li>
+
+            </ol>
+        </section>
+                <section>
+                    <h2>Stelle den GreetingController um</h2>
+                    <ol>
+                        <li>Importiere <code>loadFromServer</code> und <code>saveToServer</code> aus dem <code>backend</code>-Modul
+                        <li>Füge in der Komponente <code>GreetingController</code> zwei Methoden zum Laden und Speichern der Greetings hinzu
+                        <li>Nach dem Mounten der Komponente in den DOM sollen die Greetings geladen werden (Lifecycle-Methode <code>componentDidMount</code>)
+                        <li>Das <code>onAdd</code>-Callback von <code>GreetingDetail</code> soll die übergebene Greeting speichern und im Erfolgsfall
+                        das gespeicherte Greeting in die Liste aller Greetings zufügen.
+                    </ol>
+                <br>Weitere Details findest du unter:
                     <a href="code/material/3-remote/AUFGABEN.md" target="_blank">
                         code/material/3-remote/AUFGABEN.md</a>
-                    </p>
             </section>
-
-        </section>
         <section id="t4">
             <h1>Teil IV</h1>
             <h2>Testen (Überblick)</h2>
@@ -1465,7 +1489,7 @@ class Chart extends React.Component {
             <section>
                 <h3>Schritte</h3>
                 <ul>
-                    <li>kopiere das Material aus <code>code/material/5-3rd-party</code> in deinen src-Ordner
+                    <li>kopiere das Material aus <code>code/material/5-third-party</code> in deinen src-Ordner
                     <li>binde die Chart-Komponente in die render-Methode des <code>GreetingController</code> ein
                     <li>alle Stellen die du ändern musst sind dort bereits mit einem Kommentar versehen
                 </ul>
@@ -1651,6 +1675,12 @@ import {Link, NavLink} from "react-router-dom";
 &lt;NavLink to='/greeting/me' activeClassName="highlight">Greet me&lt;/NavLink>
 
             </code></pre>
+        </section>
+
+        <section>
+            <h2>Geschafft ;-)</h2>
+            <h3>Vielen Dank für Eure Teilnahme!</h3>
+            <p>Kontakt: nils@nilshartmann.net</p>
         </section>
 
 

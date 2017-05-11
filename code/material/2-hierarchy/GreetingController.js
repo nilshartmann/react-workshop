@@ -31,11 +31,12 @@ export default class GreetingController extends React.Component {
                     /*
                         1a. Hier statt null deine GreetingDetail-Komponente einbinden
                         1b. Eine Callback-Funktion für das Hinzufügen eines Grußes an die GreetingDetail-Komponente übergeben
-                        1c. Die Callback-Funktion soll addGreeting (s.u.) aufrufen
+                            (Property-Name: onAdd)
+                        1c. Die Callback-Funktion soll die addGreeting-Methode (s.u.) aufrufen
 
                         2a. In GreetingDetail einen Knopf zum Hinzufügen einbauen
                         2b. Beim Drücken auf den Knopf soll die übergebene Callback-Funktion (1b) mit dem eingegebenen
-                            Gruß aufgerufen werden (Parameter: ein Objekt { name: ..., greeting: ... })
+                            Gruß aufgerufen werden (Parameter: ein Objekt mit der Struktur { name: ..., greeting: ... })
                      */
                 }
             </div>);
